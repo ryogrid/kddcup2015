@@ -28,7 +28,7 @@ param = {'max_depth':2, 'eta':1, 'silent':1, 'objective':'binary:logistic' }
 
 # specify validations set to watch performance
 watchlist  = [(dtrain,'train')]
-num_round = 20000
+num_round = 1
 bst = xgb.train(param, dtrain, num_round, watchlist)
 
 fts = open('../test/torch_input_test.csv', 'r')
@@ -41,13 +41,15 @@ for tsline in fts:
                                 int(splited[6]), int(splited[7]), int(splited[8])])
 
 ts_np_arr = np.array(ts_mat)
+#dtest = xgb.DMatrix(ts_np_arr[:,1:9], label=ts_np_arr[:,0])
 dtest = xgb.DMatrix(ts_np_arr)
-#dtest = xgb.DMatrix(ts_np_arr[:,7])
 
 # this is prediction
 preds = bst.predict(dtest)
-labels = dtest.get_label()
+
+print str(len(preds))
+print str(len(enroll_ids))
 
 frslt = open('../test/xgb_c_1.csv', 'w')
 for idx in xrange(len(enroll_ids)):
-    frslt.write(enroll_ids[idx] + "," + str(labels[idx]) + "\n")
+    frslt.write(enroll_ids[idx] + "," + str(preds[idx]) + "\n")
