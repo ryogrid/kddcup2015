@@ -27,6 +27,7 @@ trainer.learningRate = 0.01 --学習係数
 trainer.maxIteration = 100  --学習回数
 trainer:train(dataset)
 
+model:evaluate()
 x = torch.Tensor(2)
 x[1] =  0.5; x[2] =  0.5; print(model:forward(x))
 x[1] =  0.5; x[2] = -0.5; print(model:forward(x))

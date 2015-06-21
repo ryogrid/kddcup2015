@@ -59,11 +59,11 @@ end
 function train_dataset:size() return 120542 end
 
 model = nn.Sequential();
-model:add(nn.Linear(8,100))
+model:add(nn.Linear(8,2000))
 model:add(nn.Tanh())
-model:add(nn.Linear(100, 100))
+model:add(nn.Linear(2000, 2000))
 model:add(nn.Tanh())
-model:add(nn.Linear(100, 1))
+model:add(nn.Linear(2000, 1))
 model:add(nn.Tanh())
 
 criterion = nn.MSECriterion()
@@ -75,7 +75,7 @@ trainer:train(train_dataset)
 model:evaluate()
 
 ft = io.open("../test/torch_input_test.csv", "r")
-fr = io.open("../test/resut_simple_nn_0620.csv", "w")
+fr = io.open("../test/resut_simple_nn_0621_2.csv", "w")
 for tiline in ft:lines() do
     local x = torch.Tensor(8)
     local input_data = split(tiline, ",")

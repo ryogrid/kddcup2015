@@ -20,8 +20,9 @@ for tryline in ftr_y:
     arr_idx = arr_idx + 1
 
 te_np_arr = np.array(te_mat)
-dtrain = xgb.DMatrix(te_np_arr[:,1:10], label=te_np_arr[:,0])
-
+dtrain = xgb.DMatrix(te_np_arr[:,1:9], label=te_np_arr[:,0])
+#dtrain = xgb.DMatrix(te_np_arr[:,8], label=te_np_arr[:,0])
+#dtrain = xgb.DMatrix(te_np_arr[:,1:10], label=te_np_arr[:,0])
 # specify parameters via map, definition are same as c++ version
 param = {'max_depth':2, 'eta':1, 'silent':1, 'objective':'binary:logistic' }
 
@@ -41,11 +42,12 @@ for tsline in fts:
 
 ts_np_arr = np.array(ts_mat)
 dtest = xgb.DMatrix(ts_np_arr)
+#dtest = xgb.DMatrix(ts_np_arr[:,7])
 
 # this is prediction
 preds = bst.predict(dtest)
-labels = dtrain.get_label()
+labels = dtest.get_label()
 
-frslt = open('../test/result_xgboost_0621_2.csv', 'w')
+frslt = open('../test/xgb_c_1.csv', 'w')
 for idx in xrange(len(enroll_ids)):
     frslt.write(enroll_ids[idx] + "," + str(labels[idx]) + "\n")
