@@ -20,15 +20,16 @@ for tryline in ftr_y:
     arr_idx = arr_idx + 1
 
 te_np_arr = np.array(te_mat)
-dtrain = xgb.DMatrix(te_np_arr[:,1:9], label=te_np_arr[:,0])
+dtrain = xgb.DMatrix(te_np_arr[0:5000,1:9], label=te_np_arr[0:5000,0])
+deval  = xgb.DMatrix(te_np_arr[5000:10000,1:9], label=te_np_arr[5000:10000,0])
 #dtrain = xgb.DMatrix(te_np_arr[:,8], label=te_np_arr[:,0])
 #dtrain = xgb.DMatrix(te_np_arr[:,1:10], label=te_np_arr[:,0])
 # specify parameters via map, definition are same as c++ version
 param = {'max_depth':2, 'eta':1, 'silent':1, 'objective':'binary:logistic' }
 
 # specify validations set to watch performance
-watchlist  = [(dtrain,'train')]
-num_round = 2
+watchlist  = [(dtrain,'train'),(deval,'eval')]
+num_round = 10
 bst = xgb.train(param, dtrain, num_round, watchlist)
 
 fts = open('../test/torch_input_test.csv', 'r')
