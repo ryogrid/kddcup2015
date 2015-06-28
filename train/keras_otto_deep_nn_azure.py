@@ -32,18 +32,6 @@ def preprocess_labels(labels, encoder=None, categorical=True):
     if categorical:
         y = np_utils.to_categorical(y)
     return y, encoder
-                                                                    
-def my_int(str1):
-    if "NA" in str1:
-        return 0
-    else:
-        return int(str1)
-
-def my_float(str1):
-    if "NA" in str1:
-        return 0
-    else:
-        return float(str1)    
 
 def add_converted_val(target_arr, add_arr):
     for elem in add_arr:
@@ -86,23 +74,25 @@ print(dims, 'dims')
 
 print("Building model...")
 
+neuro_num = 512
+
 model = Sequential()
-model.add(Dense(dims, 512, init='glorot_uniform'))
-model.add(PReLU((512,)))
-model.add(BatchNormalization((512,)))
+model.add(Dense(dims, neuro_num, init='glorot_uniform'))
+model.add(PReLU((neuro_num,)))
+model.add(BatchNormalization((neuro_num,)))
 model.add(Dropout(0.5))
 
-model.add(Dense(512, 512, init='glorot_uniform'))
-model.add(PReLU((512,)))
-model.add(BatchNormalization((512,)))
+model.add(Dense(neuro_num, neuro_num, init='glorot_uniform'))
+model.add(PReLU((neuro_num,)))
+model.add(BatchNormalization((neuro_num,)))
 model.add(Dropout(0.5))
 
-model.add(Dense(512, 512, init='glorot_uniform'))
-model.add(PReLU((512,)))
-model.add(BatchNormalization((512,)))
+model.add(Dense(neuro_num, neuro_num, init='glorot_uniform'))
+model.add(PReLU((neuro_num,)))
+model.add(BatchNormalization((neuro_num,)))
 model.add(Dropout(0.5))
 
-model.add(Dense(512, nb_classes, init='glorot_uniform'))
+model.add(Dense(neuro_num, nb_classes, init='glorot_uniform'))
 model.add(Activation('sigmoid'))
 
 model.compile(loss='binary_crossentropy', optimizer="adam")
@@ -115,8 +105,6 @@ print("Generating submission...")
 
 proba = model.predict_proba(X_test)
 
-# print(encoder.classes_[0])
-# print(proba[0])
-frslt = open('../test/keras_otto_azure_1.csv', 'w')
+frslt = open('../test/keras_otto_azure_2.csv', 'w')
 for idx in xrange(len(enroll_ids)):
     frslt.write(enroll_ids[idx] + "," + str(proba[idx][1]) + "\n")
