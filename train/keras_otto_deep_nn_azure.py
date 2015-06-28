@@ -119,4 +119,4 @@ proba = model.predict_proba(X_test)
 # print(proba[0])
 frslt = open('../test/keras_otto_azure_1.csv', 'w')
 for idx in xrange(len(enroll_ids)):
-    frslt.write(enroll_ids[idx] + "," + str(encoder.classes_[idx]) + "\n")
+    frslt.write(enroll_ids[idx] + "," + str(proba[idx][1]) + "\n")
