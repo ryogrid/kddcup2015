@@ -192,8 +192,8 @@ calcAUC(pred, test$dropout)
 # ==============================================================================
 
 # Load actual test data
-enroll_test_df <- read_csv("../test/enrollment_test.csv")
-log_test_df <- read_csv("../test/log_test.csv",
+enroll_test_df <- read_csv("/Users/ryo/work/etc/kddcup2015/test/enrollment_test.csv")
+log_test_df <- read_csv("/Users/ryo/work/etc/kddcup2015/test/log_test.csv",
                         col_types = list(time = col_character()))
 
 # Create test detail df
