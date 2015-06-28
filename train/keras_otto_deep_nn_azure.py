@@ -35,14 +35,14 @@ def preprocess_labels(labels, encoder=None, categorical=True):
 
 def add_converted_val(target_arr, add_arr):
     for elem in add_arr:
-        target_arr.append(my_float(elem))
+        target_arr.append(float(elem))
     
 ftr_x = open('./azure_train_.csv', 'r')
 te_mat = []
 for trxline in ftr_x:
     splited = trxline.split(",")
     col = []
-    col.append(my_float(splited[1]))
+    col.append(float(splited[1]))
     add_converted_val(col, splited[4:79])
     te_mat.append(col)
 
@@ -99,12 +99,12 @@ model.compile(loss='binary_crossentropy', optimizer="adam")
 
 print("Training model...")
 
-model.fit(X, y, nb_epoch=20, batch_size=128, validation_split=0.15)
+model.fit(X, y, nb_epoch=200, batch_size=128, validation_split=0.15)
 
 print("Generating submission...")
 
 proba = model.predict_proba(X_test)
 
-frslt = open('../test/keras_otto_azure_2.csv', 'w')
+frslt = open('../test/keras_otto_azure_3.csv', 'w')
 for idx in xrange(len(enroll_ids)):
     frslt.write(enroll_ids[idx] + "," + str(proba[idx][1]) + "\n")
