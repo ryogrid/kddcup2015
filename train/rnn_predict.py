@@ -1,6 +1,7 @@
 import sys
 import json
 import numpy as np
+import random
 from pybrain.structure import LinearLayer, SigmoidLayer, BiasUnit
 from pybrain.structure import FullConnection
 from pybrain.structure import RecurrentNetwork
@@ -38,7 +39,7 @@ def construct_network(input_len, hidden_nodes, is_elman=True):
 """
 main
 """
-hidden_nodes = 250
+hidden_nodes = 500
 events_len = 500
 is_elman = True
 
@@ -51,8 +52,7 @@ rnn_net = construct_network(events_len, hidden_nodes, is_elman)
 training_ds = []
 
 ftr_x = open('./rnn_train.csv', 'r')
-
-t_ds = SupervisedDataSet(events_len, 1)
+t_ds_list = []
 for trxline in ftr_x:
     events_list = []
     splited = trxline.split(",")
@@ -62,10 +62,35 @@ for trxline in ftr_x:
     for event_str in rvsd[:events_len]:
         events_list.append(int(event_str))
 
+#    random.shuffle(events_list)
     while len(events_list) < events_len:
         events_list.append(0)
-        
-    t_ds.addSample(events_list, truth_val_list)
+
+    t_ds_list.append((events_list, truth_val_list))
+    t_ds_list.append((events_list, truth_val_list))
+    t_ds_list.append((events_list, truth_val_list))
+    t_ds_list.append((events_list, truth_val_list))
+    t_ds_list.append((events_list, truth_val_list))
+    t_ds_list.append((events_list, truth_val_list))
+    t_ds_list.append((events_list, truth_val_list))
+    t_ds_list.append((events_list, truth_val_list))
+    t_ds_list.append((events_list, truth_val_list))
+    t_ds_list.append((events_list, truth_val_list))
+    t_ds_list.append((events_list, truth_val_list))
+    t_ds_list.append((events_list, truth_val_list))
+    t_ds_list.append((events_list, truth_val_list))
+    t_ds_list.append((events_list, truth_val_list))
+    t_ds_list.append((events_list, truth_val_list))    
+    t_ds_list.append((events_list, truth_val_list))
+    t_ds_list.append((events_list, truth_val_list))
+    t_ds_list.append((events_list, truth_val_list))
+    t_ds_list.append((events_list, truth_val_list))
+    t_ds_list.append((events_list, truth_val_list))    
+    
+t_ds = SupervisedDataSet(events_len, 1)
+random.shuffle(t_ds_list)
+for data in t_ds_list:
+    t_ds.addSample(data[0], data[1])
 
 trainer = BackpropTrainer(rnn_net, **parameters)
 trainer.setData(t_ds)
@@ -75,7 +100,7 @@ del t_ds  # release memory
 
 # predict
 rnn_net.reset()
-frslt = open('../test/rnn_result.csv', 'w')
+frslt = open('../test/rnn_result8.csv', 'w')
 
 fts = open('../test/rnn_test.csv', 'r')
 for tsline in fts:
